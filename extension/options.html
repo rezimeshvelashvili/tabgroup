@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>tabgroup settings</title>
+  <style>
+    :root {
+      --bg: #ffffff; --fg: #1f2328; --muted: #59636e; --line: #d1d9e0;
+      --field: #f6f8fa; --accent: #0969da; --danger: #cf222e;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0d1117; --fg: #e6edf3; --muted: #9198a1; --line: #3d444d;
+        --field: #151b23; --accent: #4493f8; --danger: #f85149;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--bg); color: var(--fg);
+      font: 14px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    main { max-width: 760px; margin: 0 auto; padding: 32px 16px 64px; }
+    h1 { font-size: 22px; margin: 0 0 4px; }
+    h2 { font-size: 16px; margin: 32px 0 8px; }
+    p, li { color: var(--muted); }
+    code {
+      background: var(--field); border: 1px solid var(--line); border-radius: 4px;
+      padding: 1px 5px; font-size: 12.5px; word-break: break-all;
+    }
+    .rule {
+      display: grid; grid-template-columns: 1fr 110px 1.6fr auto; gap: 8px;
+      align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line);
+    }
+    .head { font-size: 12px; color: var(--muted); border-bottom: 1px solid var(--line); }
+    input, select {
+      width: 100%; padding: 6px 8px; font: inherit; color: var(--fg);
+      background: var(--field); border: 1px solid var(--line); border-radius: 6px;
+    }
+    button {
+      font: inherit; padding: 6px 12px; border-radius: 6px; cursor: pointer;
+      border: 1px solid var(--line); background: var(--field); color: var(--fg);
+    }
+    button.remove { color: var(--danger); }
+    button.add { margin-top: 12px; color: var(--accent); }
+    #status { margin-left: 12px; color: var(--muted); font-size: 12px; }
+    #empty { padding: 12px 0; }
+    @media (max-width: 600px) {
+      .rule { grid-template-columns: 1fr 1fr; }
+      .rule .match { grid-column: 1 / -1; }
+      .head { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>tabgroup</h1>
+    <p>Opens tabs straight into named tab groups. A group is created the first time a tab asks for it.</p>
+
+    <h2>Choosing a group from the address</h2>
+    <p>Any page whose address ends with <code>#tabgroup=&lt;name&gt;</code> joins that group, for example
+      <code>file:///notes/week1.html#tabgroup=Work%20Notes&amp;tabcolor=green</code>.
+      The <code>tabgroup</code> command adds this for you.</p>
+
+    <h2>Folder rules</h2>
+    <p>For local pages (<code>file://</code> and <code>localhost</code>) opened <em>without</em> a
+      <code>#tabgroup</code> tag: if the address contains any of the listed text, the tab joins that group.
+      Separate several matches with commas. The first matching rule wins.</p>
+
+    <div class="rule head"><span>Group name</span><span>Color</span><span>Address contains</span><span></span></div>
+    <div id="rules"></div>
+    <p id="empty" hidden>No rules yet.</p>
+    <button class="add" id="add">+ Add rule</button>
+    <span id="status"></span>
+  </main>
+  <script type="module" src="options.js"></script>
+</body>
+</html>
